@@ -33,8 +33,8 @@ const useStyles = makeStyles((theme) => ({
   logoContainer: {
     padding: 0,
     "&:hover": {
-      backgroundColor: "transparent"
-    }
+      backgroundColor: "transparent",
+    },
   },
   tabContainer: {
     marginLeft: "auto",
@@ -54,15 +54,15 @@ const useStyles = makeStyles((theme) => ({
   menu: {
     backgroundColor: theme.palette.common.blue,
     color: "white",
-    borderRadius: "0px"
+    borderRadius: "0px",
   },
   menuItem: {
     ...theme.typography.tab,
     opacity: 0.7,
     "&:hover": {
-      opacity: 1
-    }
-  }
+      opacity: 1,
+    },
+  },
 }));
 
 export default function Header(props) {
@@ -70,6 +70,7 @@ export default function Header(props) {
   const [value, setValue] = useState(0);
   const [anchorEl, setAnchorEl] = useState(null);
   const [open, setOpen] = useState(false);
+  const [selectedIndex, setSelectedIndex] = useState(0);
 
   const handleChange = (e, value) => {
     setValue(value);
@@ -80,10 +81,23 @@ export default function Header(props) {
     setOpen(true);
   };
 
+  const handleMenuItemClick = (e, i) => {
+    setAnchorEl(null);
+    setOpen(false);
+    setSelectedIndex(i);
+  };
+
   const handleClose = (e) => {
     setAnchorEl(null);
     setOpen(false);
   };
+
+  const menuOptions = [
+    { name: "Services", link: "/services" },
+    { name: "Custom Software Development", link: "/customsoftware" },
+    { name: "Mobile App Develeopment", link: "/mobileapps" },
+    { name: "Website Develeopment", link: "/websites" },
+  ];
 
   useEffect(() => {
     if (window.location.pathname === "/" && value !== 0) {
@@ -106,7 +120,13 @@ export default function Header(props) {
       <ElevationScroll>
         <AppBar position="fixed">
           <Toolbar disableGutters>
-            <Button component={Link} to="/" className={classes.logoContainer} onClick={() => setValue(0)} disableRipple>
+            <Button
+              component={Link}
+              to="/"
+              className={classes.logoContainer}
+              onClick={() => setValue(0)}
+              disableRipple
+            >
               <img src={logo} alt="company logo" className={classes.logo} />
             </Button>
             <Tabs
@@ -156,11 +176,31 @@ export default function Header(props) {
             >
               Free Estimate
             </Button>
-            <Menu id="simple-menu" anchorEl={anchorEl} open={open} onClose={handleClose} classes={{paper: classes.menu}} MenuListProps={{onMouseLeave: handleClose}} elevation={0}>
-              <MenuItem onClick={() => {handleClose(); setValue(1)}} component={Link} to="/services" classes={{root: classes.menuItem}}>Services</MenuItem>
-              <MenuItem onClick={() => {handleClose(); setValue(1)}} component={Link} to="/customsoftware" classes={{root: classes.menuItem}}>Custom Software Development</MenuItem>
-              <MenuItem onClick={() => {handleClose(); setValue(1)}} component={Link} to="/mobileapps" classes={{root: classes.menuItem}}>Mobile App Development</MenuItem>
-              <MenuItem onClick={() => {handleClose(); setValue(1)}} component={Link} to="/websites" classes={{root: classes.menuItem}}>Website Development</MenuItem>
+            <Menu
+              id="simple-menu"
+              anchorEl={anchorEl}
+              open={open}
+              onClose={handleClose}
+              classes={{ paper: classes.menu }}
+              MenuListProps={{ onMouseLeave: handleClose }}
+              elevation={0}
+            >
+              {menuOptions.map((option, index) => (
+                <MenuItem
+                  key={option}
+                  component={Link}
+                  to={option.link}
+                  classes={{ root: classes.menuItem }}
+                  onClick={(event) => {
+                    handleMenuItemClick(event, index);
+                    setValue(1);
+                    handleClose();
+                  }}
+                  selected={index === selectedIndex && value === 1}
+                >
+                  {option.name}
+                </MenuItem>
+              ))}
             </Menu>
           </Toolbar>
         </AppBar>
