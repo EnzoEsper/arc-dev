@@ -9,6 +9,9 @@ import { Link } from "react-router-dom";
 import Menu from "@material-ui/core/Menu";
 import MenuItem from "@material-ui/core/MenuItem";
 import MenuIcon from "@material-ui/icons/Menu";
+import List from "@material-ui/core/List";
+import ListItem from "@material-ui/core/ListItem";
+import ListItemText from "@material-ui/core/ListItemText";
 
 function ElevationScroll(props) {
   const { children } = props;
@@ -252,7 +255,26 @@ export default function Header(props) {
   const drawer = (
     <>
       <SwipeableDrawer disableBackdropTransition={!iOS} disableDiscovery={iOS} open={openDrawer} onClose={() => setOpenDrawer(false)} onOpen={() => setOpenDrawer(true)}>
-        Example Drawer
+        <List disablePadding>
+          <ListItem onClick={() => setOpenDrawer(false)} divider button component={Link} to="/">
+            <ListItemText disableTypography>Home</ListItemText>
+          </ListItem>
+          <ListItem onClick={() => setOpenDrawer(false)} divider button component={Link} to="/services">
+            <ListItemText disableTypography>Services</ListItemText>
+          </ListItem>
+          <ListItem onClick={() => setOpenDrawer(false)} divider button component={Link} to="/revolution">
+            <ListItemText disableTypography>The Revolution</ListItemText>
+          </ListItem>
+          <ListItem onClick={() => setOpenDrawer(false)} divider button component={Link} to="/about">
+            <ListItemText disableTypography>About Us</ListItemText>
+          </ListItem>
+          <ListItem onClick={() => setOpenDrawer(false)} divider button component={Link} to="/contact">
+            <ListItemText disableTypography>Contact Us</ListItemText>
+          </ListItem>
+          <ListItem onClick={() => setOpenDrawer(false)} divider button component={Link} to="/estimate">
+            <ListItemText disableTypography>Free Estimate</ListItemText>
+          </ListItem>
+        </List>
       </SwipeableDrawer>
       <IconButton className={classes.drawerIconContainer} onClick={() => setOpenDrawer(!openDrawer)} disableRipple>
         <MenuIcon className={classes.drawerIcon}/>
